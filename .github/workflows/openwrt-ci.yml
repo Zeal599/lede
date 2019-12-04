@@ -56,25 +56,8 @@ jobs:
           sudo -E apt-get -y autoremove --purge
           sudo -E apt-get clean
 
-      - name: 同步最新的源码
-        run: |
-          git remote add openwrt https://github.com/coolsnowwolf/lede.git
-          git pull openwrt master
-          git remote -v
-          
-      - name: 构建自定义文件结构
-        run: |
-          cd package
-          mkdir openwrt-packages
-          cd openwrt-packages
-          git clone https://github.com/KFERMercer/luci-app-serverchan
-          git clone https://github.com/Ameykyl/luci-app-koolproxyR
-          
       - name: Update feeds
         run: |
-          git fetch openwrt
-          git merge openwrt/master
-          git pull --rebase origin master
           ./scripts/feeds update -a
           ./scripts/feeds install -a
 
@@ -116,17 +99,17 @@ jobs:
           # 无论你想要对固件进行怎样的定制, 都需要且只需要修改 EOF 回环内的内容.
           # 
 
-          # 编译r619ac-128m固件:
-           cat >> .config <<EOF
-           CONFIG_TARGET_ipq40xx=y
-           CONFIG_TARGET_ipq40xx_DEVICE_p2w_r619ac-128m=y
-           CONFIG_TARGET_BOARD=ipq40xx
-           EOF
+          # 编译x64固件:
+          # cat >> .config <<EOF
+          # CONFIG_TARGET_x86=y
+          # CONFIG_TARGET_x86_64=y
+          # CONFIG_TARGET_x86_64_Generic=y
+          # EOF
 
           # 固件压缩:
-           cat >> .config <<EOF
-           CONFIG_TARGET_IMAGES_GZIP=y
-           EOF
+          # cat >> .config <<EOF
+          # CONFIG_TARGET_IMAGES_GZIP=y
+          # EOF
 
           # 编译UEFI固件:
           # cat >> .config <<EOF
@@ -140,27 +123,27 @@ jobs:
           # EOF
 
           # 多文件系统支持:
-           cat >> .config <<EOF
-           CONFIG_PACKAGE_kmod-fs-nfs=y
-           CONFIG_PACKAGE_kmod-fs-nfs-common=y
-           CONFIG_PACKAGE_kmod-fs-nfs-v3=y
-           CONFIG_PACKAGE_kmod-fs-nfs-v4=y
-           CONFIG_PACKAGE_kmod-fs-ntfs=y
-           CONFIG_PACKAGE_kmod-fs-squashfs=y
-           EOF
+          # cat >> .config <<EOF
+          # CONFIG_PACKAGE_kmod-fs-nfs=y
+          # CONFIG_PACKAGE_kmod-fs-nfs-common=y
+          # CONFIG_PACKAGE_kmod-fs-nfs-v3=y
+          # CONFIG_PACKAGE_kmod-fs-nfs-v4=y
+          # CONFIG_PACKAGE_kmod-fs-ntfs=y
+          # CONFIG_PACKAGE_kmod-fs-squashfs=y
+          # EOF
 
           # USB3.0支持:
-           cat >> .config <<EOF
-           CONFIG_PACKAGE_kmod-usb-ohci=y
-           CONFIG_PACKAGE_kmod-usb-ohci-pci=y
-           CONFIG_PACKAGE_kmod-usb2=y
-           CONFIG_PACKAGE_kmod-usb2-pci=y
-           CONFIG_PACKAGE_kmod-usb3=y
-           EOF
+          # cat >> .config <<EOF
+          # CONFIG_PACKAGE_kmod-usb-ohci=y
+          # CONFIG_PACKAGE_kmod-usb-ohci-pci=y
+          # CONFIG_PACKAGE_kmod-usb2=y
+          # CONFIG_PACKAGE_kmod-usb2-pci=y
+          # CONFIG_PACKAGE_kmod-usb3=y
+          # EOF
 
           # 常用LuCI插件选择:
-           cat >> .config <<EOF
-           CONFIG_PACKAGE_luci-app-adbyby-plus=y
+          # cat >> .config <<EOF
+          # CONFIG_PACKAGE_luci-app-adbyby-plus=y
           # CONFIG_PACKAGE_luci-app-aria2=y
           # CONFIG_PACKAGE_luci-app-baidupcs-web=y
           # CONFIG_PACKAGE_luci-app-docker=y
@@ -171,35 +154,35 @@ jobs:
           # CONFIG_PACKAGE_luci-app-openvpn=y
           # CONFIG_PACKAGE_luci-app-openvpn-server=y
           # CONFIG_PACKAGE_luci-app-qbittorrent=y
-           CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Kcptun=y
-           CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Shadowsocks=y
-           CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_ShadowsocksR_Server=y
-           CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_ShadowsocksR_Socks=y
-           CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_V2ray=y
-           CONFIG_PACKAGE_luci-app-ttyd=y
+          # CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Kcptun=y
+          # CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Shadowsocks=y
+          # CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_ShadowsocksR_Server=y
+          # CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_ShadowsocksR_Socks=y
+          # CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_V2ray=y
+          # CONFIG_PACKAGE_luci-app-ttyd=y
           # CONFIG_PACKAGE_luci-app-v2ray-server=y
           # CONFIG_PACKAGE_luci-app-verysync=y
           # CONFIG_PACKAGE_luci-app-webadmin=y
           # CONFIG_PACKAGE_luci-app-wireguard=y
-           CONFIG_PACKAGE_luci-app-wrtbwmon=y
-           EOF
+          # CONFIG_PACKAGE_luci-app-wrtbwmon=y
+          # EOF
 
           # LuCI主题:
-           cat >> .config <<EOF
-           CONFIG_PACKAGE_luci-theme-argon=y
+          # cat >> .config <<EOF
+          # CONFIG_PACKAGE_luci-theme-argon=y
           # CONFIG_PACKAGE_luci-theme-netgear=y
-           EOF
+          # EOF
 
           # 常用软件包:
-           cat >> .config <<EOF
-           CONFIG_PACKAGE_curl=y
-           CONFIG_PACKAGE_htop=y
-           CONFIG_PACKAGE_nano=y
-           CONFIG_PACKAGE_screen=y
-           CONFIG_PACKAGE_tree=y
-           CONFIG_PACKAGE_vim-fuller=y
-           CONFIG_PACKAGE_wget=y
-           EOF
+          # cat >> .config <<EOF
+          # CONFIG_PACKAGE_curl=y
+          # CONFIG_PACKAGE_htop=y
+          # CONFIG_PACKAGE_nano=y
+          # CONFIG_PACKAGE_screen=y
+          # CONFIG_PACKAGE_tree=y
+          # CONFIG_PACKAGE_vim-fuller=y
+          # CONFIG_PACKAGE_wget=y
+          # EOF
 
           # 取消编译VMware镜像以及镜像填充 (不要删除被缩进的注释符号):
           # cat >> .config <<EOF
